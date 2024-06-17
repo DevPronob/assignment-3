@@ -7,7 +7,8 @@ const sendResponse = <T>(res: Response, data: {
     message: string,
     data: T
 }) => {
-    if (data) {
+    console.log(data)
+    if (data.data && Array.isArray(data.data) ? data.data.length > 0 : true) {
         return res.status(data?.statusCode).json({
             success: data.success,
             message: data.message,

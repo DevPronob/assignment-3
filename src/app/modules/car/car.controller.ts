@@ -10,7 +10,7 @@ const createCar = catchAsync(
         const result = await CarServices.createCarIntoDB(req.body);
         return sendResponse(res, {
             success: true,
-            statusCode: httpStatus.OK,
+            statusCode: httpStatus.CREATED,
             message: 'Car created successfully',
             data: result
         })

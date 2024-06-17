@@ -44,6 +44,7 @@ const getUserBookings = catchAsync(
             throw new AppError(httpStatus.NOT_FOUND, "User not found")
         }
         const result = await BookingsServices.getMyBookingsFromDB(userId?._id);
+        console.log(result, "result")
         return sendResponse(res, {
             success: true,
             statusCode: httpStatus.OK,

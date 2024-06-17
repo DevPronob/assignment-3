@@ -10,7 +10,7 @@ const signup = catchAsync(
         const result = await AuthServices.createSignupIntoDB(req.body);
         return sendResponse(res, {
             success: true,
-            statusCode: httpStatus.OK,
+            statusCode: httpStatus.CREATED,
             message: 'User registered successfully',
             data: result
         })

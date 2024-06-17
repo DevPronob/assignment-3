@@ -11,7 +11,7 @@ const totalCost = (starTime?: string, endTime?: string, pricePerHour?: number) =
     // if (duration < 0) {
     //     duration += 24;
     // }
-    const totalCost = duration * pricePerHour;
+    const totalCost = duration * (pricePerHour as number);
     console.log(totalCost)
     return totalCost
 }

@@ -9,7 +9,7 @@ const createbookingValidation = z.object({
             invalid_type_error: "user  is required as string",
             required_error: "user  is required"
         }).optional(),
-        car: z.string({
+        carId: z.string({
             invalid_type_error: "car id is required as string",
             required_error: "car is required"
         }),
