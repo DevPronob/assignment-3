@@ -29,7 +29,7 @@ create a .env file in the root. then go to  mongodb site. <br/>
 collect the mongodb url and paste it in the .env file with a proper name 
 nad aslo add the port number with name in the .env file . <br/>
 then go to the config >index.ts file . add .env file names in index.ts like <br/>
-
+```
 export default {
     port: process.env.PORT,<br/>
     mongodb_url: process.env.MONGO_URL,<br/>
@@ -37,6 +37,7 @@ export default {
     NODE_ENV: process.env.NODE_ENV,<br/>
     jwt_secrect: process.env.JWT_SECRECT
 };
+```
 <br/>
 process.env.YOUR .ENV FILE PORT <br/>
 process.env.YOUR .ENV FILE DATABASE URL
