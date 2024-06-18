@@ -48,7 +48,7 @@ process.env.YOUR .ENV FILE JWT_SECRECT
 
 ```
 <br/>
-**like that.**
+**Like That**
 <br/> after adding that go to the server.ts file and see all the configeration is correct or not.<br/>
 then add the commend 
 npm run start:dev
