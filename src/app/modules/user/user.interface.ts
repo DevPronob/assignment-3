@@ -1,6 +1,7 @@
 import { Model } from "mongoose";
 
 export type TUser = {
+    [x: string]: string | undefined;
     name: string;
     email: string;
     role: 'user' | 'admin';

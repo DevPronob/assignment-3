@@ -1,4 +1,22 @@
-# how to run the application locally
+## Live Link
+https://car-rental-service-assignment.vercel.app/
+
+## Used Tecnology
+1.Node Js
+2.Express Js
+3.Typescript 
+4.MongoDb
+5.Zod (For Validattion)
+6.JWT (For Authentation and Authorizion)
+7.Bcrypt (For hassing password)
+
+## Features Implemented
+1.Authentication and Authorization:JWT-based authentication middleware.
+2.CURD Operations for User Management,Car Management,Booking Management.
+3.Error Handling for Global error handling with custom error response middleware to catch and handle errors.
+3.Zod Validation for Data Validation.
+
+## how to run the application locally
 
 Firstly you have first to clone your repo
 git clone https://github.com/DevPronob/assignment-3.git

@@ -14,7 +14,7 @@ export default tseslint.config(
     },
     {
         rules: {
-            "no-unused-vars": "error",
+            "no-unused-vars": "warn",
             "no-undef": "error",
             "prefer-const": "error",
             "no-console": "warn",

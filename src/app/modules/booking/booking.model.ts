@@ -1,5 +1,5 @@
 
-import mongoose, { model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { TBooking } from "./booking.interface";
 
 const bookingSchema = new Schema<TBooking>({

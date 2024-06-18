@@ -1,6 +1,5 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
-import { USER_Role } from './app/modules/user/user.Constant';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import router from './app/routes';

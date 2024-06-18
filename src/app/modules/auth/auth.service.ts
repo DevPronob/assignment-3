@@ -4,18 +4,23 @@ import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 import { createToken } from "./auth.utils";
-import config from "../../../config";
+import config from "../../config";
 
 const createSignupIntoDB = async (payload: TLoginUser) => {
 
-    //registering user
-    console.log(payload, "payload")
-    const user = await User.isUserExistsByCustomId(payload.email)
+    // Check if the user already exists
+    const user = await User.isUserExistsByCustomId(payload.email);
     if (user) {
-        throw new AppError(httpStatus.BAD_REQUEST, "User already Exits")
+        throw new AppError(httpStatus.BAD_REQUEST, "User already exists");
     }
-    const result = await User.create(payload)
-    return result
+
+    // Create a new user
+    const newUser = new User(payload);
+    await newUser.save();
+
+    // Retrieve the user without the password field
+    const userWithoutPassword = await User.findById(newUser._id).select('-password');
+    return userWithoutPassword;
 };
 
 const loginIntoDB = async (payload: TUser) => {
@@ -39,19 +44,20 @@ const loginIntoDB = async (payload: TUser) => {
     //creating jwt token
     const token = createToken(
         jwtPayload,
-        config.jwt_secrect as string,
+        process.env.JWT_SECRECT as string,
         '10d',
     );
     const refreshToken = createToken(
         jwtPayload,
-        config.jwt_secrect as string,
+        process.env.JWT_SECRECT as string,
         '30d',
     );
+    const userWithoutPassword = await User.findById(user._id).select('-password');
 
     return {
         token,
         refreshToken,
-        user
+        user: userWithoutPassword
     }
 
 };

@@ -1,7 +1,6 @@
 import catchAsync from "../../utilits/catchAsync";
 import sendResponse from "../../utilits/sendRespons";
 import httpStatus from 'http-status';
-import config from "../../../config";
 import { BookingsServices } from "./booking.service";
 import { User } from "../user/user.model";
 import AppError from "../../errors/AppError";
@@ -37,14 +36,13 @@ const getBookings = catchAsync(
 )
 const getUserBookings = catchAsync(
     async (req, res) => {
-        const { id } = req.params
+        // const { id } = req.params
         const userEmail = req.user.email
         const userId = await User.isUserExistsByCustomId(userEmail)
         if (!userId) {
             throw new AppError(httpStatus.NOT_FOUND, "User not found")
         }
         const result = await BookingsServices.getMyBookingsFromDB(userId?._id);
-        console.log(result, "result")
         return sendResponse(res, {
             success: true,
             statusCode: httpStatus.OK,

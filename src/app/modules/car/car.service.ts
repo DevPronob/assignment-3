@@ -53,7 +53,7 @@ const deleteSingleCarIntoDB = async (id: string) => {
     return result
 };
 
-const returnCarIntoDB = async (payload: any) => {
+const returnCarIntoDB = async (payload: { bookingId: string, endTime: string }) => {
     //returing car by adding total and end time
     const booking = await Booking.findById(payload.bookingId)
     console.log(booking, "booking")

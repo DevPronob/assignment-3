@@ -1,11 +1,11 @@
-import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
+import { ErrorRequestHandler, Request, Response, NextFunction } from "express";
 import { TErrorSoutces } from "../interface/error";
 import handleDuplicateError from "../errors/handleDuplicate";
 import handleValidationError from "../errors/handleValidationError";
 import { ZodError } from "zod";
 import handleZodError from "../errors/handleZodError";
 import handleCastError from "../errors/handleCastError";
-import config from "../../config";
+import config from "../config";
 import AppError from "../errors/AppError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req: Request, res: Response, next: NextFunction) => {
@@ -38,7 +38,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req: Request, res: Respons
         statusCode = simplifiedError?.statusCode;
         message = simplifiedError?.message;
         errorSources = simplifiedError?.errorSources;
-    } else if (err.name === 'CastError') {
+    } else if (err?.name === "CastError") {
         const simplifiedError = handleCastError(err);
 
         statusCode = simplifiedError?.statusCode;

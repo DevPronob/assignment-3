@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 import { TUser, UserModel } from "./user.interface";
-import config from "../../../config";
+import config from "../../config";
 import bcrypt from 'bcrypt';
 const userSchema = new Schema<TUser, UserModel>({
     name: {
@@ -35,10 +35,10 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, saltRounds);
     next()
 })
-userSchema.post('save', async function (doc, next) {
-    doc.password = ''
-    next()
-})
+// userSchema.post('save', async function (doc, next) {
+//     doc.password = ''
+//     next()
+// })
 
 userSchema.statics.isUserExistsByCustomId = async function (email: string) {
     console.log(email)
