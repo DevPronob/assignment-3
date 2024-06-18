@@ -11,18 +11,18 @@
 + Bcrypt (For hassing password)
 
 ## Features Implemented
-1.Authentication and Authorization:JWT-based authentication middleware.
-2.CURD Operations for User Management,Car Management,Booking Management.
-3.Error Handling for Global error handling with custom error response middleware to catch and handle errors.
-3.Zod Validation for Data Validation.
++ Authentication and Authorization:JWT-based authentication middleware.
++ CURD Operations for User Management,Car Management,Booking Management.
++ Error Handling for Global error handling with custom error response middleware to catch and handle errors.
++ Zod Validation for Data Validation.
 
 ## how to run the application locally
 
 Firstly you have first to clone your repo
 git clone https://github.com/DevPronob/assignment-3.git
 
-then when the repository has been cloned <br/>
-cd assignment-3
++ then when the repository has been cloned <br/>
++ cd assignment-3
 
 and then open the vs code with this file.then you have to see where .env(prossess.env.--) is used .
 create a .env file in the root. then go to  mongodb site. <br/>
@@ -45,6 +45,7 @@ process.env.YOUR .ENV FILE MONGO_URL
 process.env.YOUR .ENV FILE SALT_ROUND
 process.env.YOUR .ENV FILE NODE_ENV
 process.env.YOUR .ENV FILE JWT_SECRECT
+
 ```
 <br/>
 **like that.**
