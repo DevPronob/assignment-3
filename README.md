@@ -2,13 +2,13 @@
 **https://car-rental-service-assignment.vercel.app/**
 
 ## Used Tecnology
-1.Node Js
-2.Express Js
-3.Typescript 
-4.MongoDb
-5.Zod (For Validattion)
-6.JWT (For Authentation and Authorizion)
-7.Bcrypt (For hassing password)
++ Node Js
++ Express Js
++ Typescript 
++ MongoDb
++ Zod (For Validattion)
++ JWT (For Authentation and Authorizion)
++ Bcrypt (For hassing password)
 
 ## Features Implemented
 1.Authentication and Authorization:JWT-based authentication middleware.
@@ -28,7 +28,7 @@ and then open the vs code with this file.then you have to see where .env(prosses
 create a .env file in the root. then go to  mongodb site. <br/>
 collect the mongodb url and paste it in the .env file with a proper name 
 nad aslo add the port number with name in the .env file . <br/>
-then go to the config >index.ts file . add .env file names in index.ts like <br/>
+then go to the config >index.ts file . add .env file names in index.ts  <br/>
 ```
 export default {
     port: process.env.PORT,<br/>
@@ -39,11 +39,15 @@ export default {
 };
 ```
 <br/>
+```
 process.env.YOUR .ENV FILE PORT <br/>
-process.env.YOUR .ENV FILE DATABASE URL
-
+process.env.YOUR .ENV FILE MONGO_URL
+process.env.YOUR .ENV FILE SALT_ROUND
+process.env.YOUR .ENV FILE NODE_ENV
+process.env.YOUR .ENV FILE JWT_SECRECT
+```
 <br/>
-that. 
+**like that.**
 <br/> after adding that go to the server.ts file and see all the configeration is correct or not.<br/>
 then add the commend 
 npm run start:dev
