@@ -38,7 +38,7 @@ export default {
     jwt_secrect: process.env.JWT_SECRECT
 };
 ```
-<br/>
+
 ```
 process.env.YOUR .ENV FILE PORT <br/>
 process.env.YOUR .ENV FILE MONGO_URL
