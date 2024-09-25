@@ -54,11 +54,43 @@ const getUserBookings = catchAsync(
     }
 )
 
+const updateBooking = catchAsync(
+    async (req, res) => {
+        console.log(req.body)
+        const { id } = req.params
+        const result = await BookingsServices.updateBooking(id, req.body);
+        return sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: ' Booking updates successfully',
+            data: result
+        })
+
+
+    }
+)
+
+const deleteBooking = catchAsync(
+    async (req, res) => {
+        const { id } = req.params
+        const result = await BookingsServices.deleteBooking(id);
+        return sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: ' Booking deleted successfully',
+            data: result
+        })
+
+
+    }
+)
 
 
 
 export const BookingControllers = {
     createBooking,
     getBookings,
-    getUserBookings
+    getUserBookings,
+    updateBooking,
+    deleteBooking
 }

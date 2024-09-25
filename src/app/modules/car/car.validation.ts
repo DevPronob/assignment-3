@@ -12,11 +12,14 @@ const carValidationSchema = z.object({
         color: z.string({
             required_error: "Color is required"
         }),
-        isElectric: z.boolean(),
+        isElectric: z.boolean().optional(),
         status: z.enum(['available', 'unavailable']).default('available'),
         features: z.array(z.string()).default([]),
         pricePerHour: z.number(),
-        isDeleted: z.boolean().default(false)
+        isDeleted: z.boolean().default(false),
+        images: z.array(z.string()).default([]),
+        featured: z.boolean().default(false),
+        type: z.string()
     })
 })
 const updateCarValidationSchema = z.object({
@@ -28,7 +31,10 @@ const updateCarValidationSchema = z.object({
         status: z.enum(['available', 'unavailable']).default('available').optional(),
         features: z.array(z.string()).default([]).optional(),
         pricePerHour: z.number().optional(),
-        isDeleted: z.boolean().default(false).optional()
+        isDeleted: z.boolean().default(false).optional(),
+        images: z.array(z.string()).default([]),
+        featured: z.boolean().default(false),
+        type: z.string().optional()
     })
 })
 

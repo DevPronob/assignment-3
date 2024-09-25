@@ -7,7 +7,8 @@ export type TUser = {
     role: 'user' | 'admin';
     password: string;
     phone: string;
-    address: string;
+    address?: string;
+    status: string
 }
 
 export type NewUser = {

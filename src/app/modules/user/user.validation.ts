@@ -13,9 +13,20 @@ export const createUserValidationSchema = z.object({
         phone: z.string({
             required_error: "phone number is required"
         }),
-        address: z.string({
-            required_error: "address is required"
-        }),
+        address: z.string(),
+        status: z.enum(['active', 'blocked']).default('active')
+    })
+});
+
+export const updateUserValidationSchema = z.object({
+    body: z.object({
+        name: z.string().optional(),
+        email: z.string().email("Invalid email address").optional(),
+        role: z.enum(['admin', 'user']).default('user').optional(),
+        password: z.string().min(3, { message: "Password must be at least 3 characters" }).optional(),
+        phone: z.string().optional(),
+        address: z.string().optional(),
+        status: z.enum(['active', 'blocked']).default('active').optional()
     })
 });
 export const loginUserValidationSchema = z.object({
@@ -29,5 +40,6 @@ export const loginUserValidationSchema = z.object({
 });
 export const UserValidations = {
     createUserValidationSchema,
-    loginUserValidationSchema
+    loginUserValidationSchema,
+    updateUserValidationSchema
 };

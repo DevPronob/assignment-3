@@ -4,7 +4,7 @@ import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 import { createToken } from "./auth.utils";
-import config from "../../config";
+
 
 const createSignupIntoDB = async (payload: TLoginUser) => {
 

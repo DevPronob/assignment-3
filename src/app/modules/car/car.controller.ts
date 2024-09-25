@@ -5,8 +5,8 @@ import { CarServices } from "./car.service";
 
 const createCar = catchAsync(
     async (req, res) => {
-
-        const result = await CarServices.createCarIntoDB(req.body);
+        console.log(req.files)
+        const result = await CarServices.createCarIntoDB(req.body, req.files);
         return sendResponse(res, {
             success: true,
             statusCode: httpStatus.CREATED,
@@ -21,7 +21,7 @@ const createCar = catchAsync(
 const getCars = catchAsync(
     async (req, res) => {
         console.log(req.user, "bookings")
-        const result = await CarServices.getCarsFromDB();
+        const result = await CarServices.getCarsFromDB(req.query);
         return sendResponse(res, {
             success: true,
             statusCode: httpStatus.OK,
@@ -50,7 +50,8 @@ const getSingleCar = catchAsync(
 const updateSingleCar = catchAsync(
     async (req, res) => {
         const { id } = req.params
-        const result = await CarServices.upddateSingleCarIntoDB(id, req.body);
+        console.log(req.body, "ffff")
+        const result = await CarServices.upddateSingleCarIntoDB(id, req.body, req.files);
         return sendResponse(res, {
             success: true,
             statusCode: httpStatus.OK,

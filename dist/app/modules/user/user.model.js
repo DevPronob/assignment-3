@@ -40,7 +40,8 @@ const userSchema = new mongoose_1.Schema({
         type: String
     },
     address: {
-        type: String
+        type: String,
+        required: false
     },
 }, { timestamps: true });
 userSchema.pre('save', function (next) {

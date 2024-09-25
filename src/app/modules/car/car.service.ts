@@ -1,22 +1,47 @@
+/* eslint-disable prefer-const */
 import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
 import { TCar } from "./car.interface";
 import { Car } from "./car.model";
 import { Booking } from "../booking/booking.model";
 import totalCost from "./car.utils";
+import { QueryBuilder } from "../../builder/QueryBuilder";
+import { v2 as cloudinary } from 'cloudinary';
 
-const createCarIntoDB = async (payload: TCar) => {
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createCarIntoDB = async (payload: any, file: any) => {
     //creating car
-    console.log(payload, "payload")
-    const result = await Car.create(payload)
+    const imageName = `${Math.floor(Math.random() * 1000)}${payload.name}`
+    let imageUrlList = [];
+    for (let i = 0; i < file.length; i++) {
+        let locaFilePath = file[i].path;
+        const result = await cloudinary.uploader.upload(locaFilePath, {
+            public_id: imageName
+        });
+        // Upload the local image to Cloudinary
+        // and get image url as response
+        // let result = await uploadToCloudinary(locaFilePath);
+        imageUrlList.push(result.url);
+    }
+    console.log(file)
+    console.log(imageUrlList)
+
+    const carData = {
+        ...payload,
+        images: imageUrlList
+    }
+
+
+
+    const result = await Car.create(carData)
     return result
 };
 
-const getCarsFromDB = async () => {
+const getCarsFromDB = async (query: Record<string, unknown>) => {
 
     //getting all cars
-    const result = await Car.find()
+    const carQuery = await new QueryBuilder(Car.find(), query).search(['name', 'description']).filter().sort().paginate()
+    const result = carQuery.modelQuery
     return result
 };
 const getSingleCarFromDB = async (id: string) => {
@@ -26,14 +51,41 @@ const getSingleCarFromDB = async (id: string) => {
     return result
 };
 
-const upddateSingleCarIntoDB = async (id: string, payload: Partial<TCar>) => {
+const upddateSingleCarIntoDB = async (id: string, payload: Partial<TCar>, file: any) => {
+    console.log(payload, "payload")
     //updating car
     const isCarExits = await Car.findById(id)
     if (!isCarExits) {
         throw new AppError(httpStatus.NOT_FOUND, "Car is not exits")
+
+
+    }
+    let imageUrlList = [];
+
+    if (file.length > 0) {
+
+        const imageName = `${Math.floor(Math.random() * 1000)}${payload.name}`
+
+        for (let i = 0; i < file.length; i++) {
+            let locaFilePath = file[i].path;
+            console.log(locaFilePath, "locaFilePath")
+            const result = await cloudinary.uploader.upload(locaFilePath, {
+                public_id: imageName
+            });
+            // Upload the local image to Cloudinary
+            // and get image url as response
+            // let result = await uploadToCloudinary(locaFilePath);
+            imageUrlList.push(result.url);
+        }
+    }
+    console.log(file, "file")
+    console.log(imageUrlList)
+    const carData = {
+        ...payload,
+        images: imageUrlList
     }
 
-    const result = await Car.findByIdAndUpdate(id, payload, {
+    const result = await Car.findByIdAndUpdate(id, carData, {
         new: true,
         runValidators: true
     })
@@ -47,9 +99,8 @@ const deleteSingleCarIntoDB = async (id: string) => {
         throw new AppError(httpStatus.NOT_FOUND, "Car is not exits")
     }
 
-    const result = await Car.findByIdAndUpdate(id, { isDeleted: true }, {
-        new: true,
-    })
+    const result = await Car.findOneAndDelete({ _id: id })
+    console.log('deleteCar', result)
     return result
 };
 
@@ -58,13 +109,13 @@ const returnCarIntoDB = async (payload: { bookingId: string, endTime: string }) 
     const booking = await Booking.findById(payload.bookingId)
     console.log(booking, "booking")
     const startTime = booking?.startTime
-    const car = await Car.findById(booking?.car)
-    const resTotal = totalCost(startTime, payload.endTime, car?.pricePerHour) //total cost getting by this 
+    const resTotal = totalCost(startTime, payload.endTime, booking?.costWithFeature) //total cost getting by this 
     const result = await Booking.findOneAndUpdate(
         { _id: payload.bookingId },
         {
             endTime: payload.endTime,
-            totalCost: resTotal
+            totalCost: resTotal,
+            returnCar: true
         },
         { new: true }
     )

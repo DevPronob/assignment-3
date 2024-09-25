@@ -11,9 +11,10 @@ const router = express.Router();
 
 
 router.post('/', auth(USER_Role.USER), validateRequest(bookingValidation.createbookingValidation), BookingControllers.createBooking);
-// router.post('/', validateRequest(UserValidations.loginUserValidationSchema), AuthControllers.login);
 router.get('/', auth(USER_Role.ADMIN), BookingControllers.getBookings);
+router.put('/:id', auth(USER_Role.ADMIN), validateRequest(bookingValidation.updateBookingValidation), BookingControllers.updateBooking);
 router.get('/my-bookings', auth(USER_Role.USER), BookingControllers.getUserBookings);
-// router.patch('/get-academic-semester/:id', AcademicFacultyControllers.updateSingleAcademicFaculty);
+router.delete('/:id', auth(USER_Role.USER), BookingControllers.deleteBooking);
+
 
 export const bookingRoutes = router;

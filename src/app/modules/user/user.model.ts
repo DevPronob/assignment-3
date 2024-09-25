@@ -23,11 +23,18 @@ const userSchema = new Schema<TUser, UserModel>({
         select: 0
     },
     phone: {
-        type: String
+        type: String,
+        required: false
     },
 
     address: {
-        type: String
+        type: String,
+        required: false
+    },
+    status: {
+        type: String,
+        enum: ['active', 'blocked'],
+        default: 'active'
     },
 }, { timestamps: true });
 userSchema.pre('save', async function (next) {

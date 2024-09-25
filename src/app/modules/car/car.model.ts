@@ -33,6 +33,23 @@ const carSchema = new Schema<TCar>({
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    images: {
+        type: [String],
+        default: []
+    },
+    featured: {
+        type: Boolean,
+        default: false
+    },
+    type: {
+        type: String,
+    },
+    model: {
+        type: String
+    },
+    year: {
+        type: String
     }
 }, { timestamps: true });
 

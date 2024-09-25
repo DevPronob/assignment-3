@@ -6,15 +6,12 @@ export type TCar = {
     status: 'available' | 'unavailable';
     features: string[];
     pricePerHour: number;
-    isDeleted: boolean
+    isDeleted: boolean,
+    images: string[],
+    featured: boolean,
+    type: string,
+    model: string,
+    year: string
 }
 
 
-export type TUser = {
-    name: string;
-    email: string;
-    role: 'user' | 'admin';
-    password: string;
-    phone: string;
-    address: string;
-}
