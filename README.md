@@ -38,16 +38,16 @@ Avis aims to streamline the process of renting cars. Users can explore available
 - **Backend**: Node.js, Express.js, TypeScript
 - **Database**: MongoDB with Mongoose
 - **Authentication**: JSON Web Tokens (JWT)
-- **Payment Gateway**: AamarPay
+- **Payment Gateway**: SSL Commerez
 - **Deployment**: Vercel (Frontend & Backend)
-- **Other Tools**: TypeScript, AamarPay
+- **Other Tools**: TypeScript, SSL Commerez
 
 ## Installation Guideline
 
 ### Prerequisites
 - **Node.js** (v14 or higher)
 - **MongoDB Atlas** or local MongoDB instance
-- **AamarPay** account for payment gateway setup
+- **SSL Commerecez** account for payment gateway setup
 
 ### Installation Steps
 
@@ -68,7 +68,7 @@ SALT_ROUND=5
 NODE_ENV=development
 JWT_SECRET=your_jwt_secret
 BASEURL=http://localhost:5173
-STORE_ID=ccc66f3af6144f2b
-AAMARPAY_KEY=ccc66f3af6144f2b@ssl
+SSL_STORE_ID=ccc66f3af6144f2b
+SSL_KEY=ccc66f3af6144f2b@ssl
 
 
