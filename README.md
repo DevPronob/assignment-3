@@ -46,29 +46,13 @@ Avis aims to streamline the process of renting cars. Users can explore available
 
 ### Prerequisites
 - **Node.js** (v14 or higher)
-- **MongoDB Atlas** or local MongoDB instance
-- **SSL Commerecez** account for payment gateway setup
+
 
 ### Installation Steps
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-repo/avis-car-rental.git
-   cd avis-car-rental
-
-
-## Configuration
-
-Create a `.env` file in the root directory of the server with the following environment variables:
-
-```env
-PORT=5000
-MONGO_URL=mongodb+srv://username:password@cluster.mongodb.net/avis?retryWrites=true&w=majority
-SALT_ROUND=5
-NODE_ENV=development
-JWT_SECRET=your_jwt_secret
-BASEURL=http://localhost:5173
-SSL_STORE_ID=ccc66f3af6144f2b
-SSL_KEY=ccc66f3af6144f2b@ssl
+   git clone https://github.com/DevPronob/assignment-3.git
+   cd assignment-3
 
 
