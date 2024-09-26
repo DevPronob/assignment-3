@@ -16,7 +16,9 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-app.use(cors({ origin: ['http://localhost:5173'], credentials: true }))
+app.use(cors({
+    origin: ['https://car-rental-app-client-10.vercel.app', 'http://localhost:5173'], credentials: true
+}))
 
 // app.use(express.static(path.join(__dirname, 'client/build')));
 // Routes
