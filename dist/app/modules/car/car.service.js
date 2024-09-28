@@ -13,20 +13,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CarServices = void 0;
+/* eslint-disable prefer-const */
 const http_status_1 = __importDefault(require("http-status"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const car_model_1 = require("./car.model");
 const booking_model_1 = require("../booking/booking.model");
 const car_utils_1 = __importDefault(require("./car.utils"));
-const createCarIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const QueryBuilder_1 = require("../../builder/QueryBuilder");
+const cloudinary_1 = require("cloudinary");
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createCarIntoDB = (payload, file) => __awaiter(void 0, void 0, void 0, function* () {
     //creating car
-    console.log(payload, "payload");
-    const result = yield car_model_1.Car.create(payload);
+    const imageName = `${Math.floor(Math.random() * 1000)}${payload.name}`;
+    let imageUrlList = [];
+    for (let i = 0; i < file.length; i++) {
+        let locaFilePath = file[i].path;
+        const result = yield cloudinary_1.v2.uploader.upload(locaFilePath, {
+            public_id: imageName
+        });
+        // Upload the local image to Cloudinary
+        // and get image url as response
+        // let result = await uploadToCloudinary(locaFilePath);
+        imageUrlList.push(result.url);
+    }
+    console.log(file);
+    console.log(imageUrlList);
+    const carData = Object.assign(Object.assign({}, payload), { images: imageUrlList });
+    const result = yield car_model_1.Car.create(carData);
     return result;
 });
-const getCarsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+const getCarsFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
     //getting all cars
-    const result = yield car_model_1.Car.find();
+    const carQuery = yield new QueryBuilder_1.QueryBuilder(car_model_1.Car.find(), query).search(['name', 'description']).filter().sort().paginate();
+    const result = carQuery.modelQuery;
     return result;
 });
 const getSingleCarFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -34,13 +53,32 @@ const getSingleCarFromDB = (id) => __awaiter(void 0, void 0, void 0, function* (
     const result = yield car_model_1.Car.findById(id);
     return result;
 });
-const upddateSingleCarIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const upddateSingleCarIntoDB = (id, payload, file) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(payload, "payload");
     //updating car
     const isCarExits = yield car_model_1.Car.findById(id);
     if (!isCarExits) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Car is not exits");
     }
-    const result = yield car_model_1.Car.findByIdAndUpdate(id, payload, {
+    let imageUrlList = [];
+    if (file.length > 0) {
+        const imageName = `${Math.floor(Math.random() * 1000)}${payload.name}`;
+        for (let i = 0; i < file.length; i++) {
+            let locaFilePath = file[i].path;
+            console.log(locaFilePath, "locaFilePath");
+            const result = yield cloudinary_1.v2.uploader.upload(locaFilePath, {
+                public_id: imageName
+            });
+            // Upload the local image to Cloudinary
+            // and get image url as response
+            // let result = await uploadToCloudinary(locaFilePath);
+            imageUrlList.push(result.url);
+        }
+    }
+    console.log(file, "file");
+    console.log(imageUrlList);
+    const carData = Object.assign(Object.assign({}, payload), { images: imageUrlList });
+    const result = yield car_model_1.Car.findByIdAndUpdate(id, carData, {
         new: true,
         runValidators: true
     });
@@ -52,9 +90,8 @@ const deleteSingleCarIntoDB = (id) => __awaiter(void 0, void 0, void 0, function
     if (!isCarExits) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Car is not exits");
     }
-    const result = yield car_model_1.Car.findByIdAndUpdate(id, { isDeleted: true }, {
-        new: true,
-    });
+    const result = yield car_model_1.Car.findOneAndDelete({ _id: id });
+    console.log('deleteCar', result);
     return result;
 });
 const returnCarIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -62,11 +99,11 @@ const returnCarIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function*
     const booking = yield booking_model_1.Booking.findById(payload.bookingId);
     console.log(booking, "booking");
     const startTime = booking === null || booking === void 0 ? void 0 : booking.startTime;
-    const car = yield car_model_1.Car.findById(booking === null || booking === void 0 ? void 0 : booking.car);
-    const resTotal = (0, car_utils_1.default)(startTime, payload.endTime, car === null || car === void 0 ? void 0 : car.pricePerHour); //total cost getting by this 
+    const resTotal = (0, car_utils_1.default)(startTime, payload.endTime, booking === null || booking === void 0 ? void 0 : booking.costWithFeature); //total cost getting by this 
     const result = yield booking_model_1.Booking.findOneAndUpdate({ _id: payload.bookingId }, {
         endTime: payload.endTime,
-        totalCost: resTotal
+        totalCost: resTotal,
+        returnCar: true
     }, { new: true });
     return result;
 });

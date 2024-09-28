@@ -54,8 +54,31 @@ const getUserBookings = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
         data: result
     });
 }));
+const updateBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
+    const { id } = req.params;
+    const result = yield booking_service_1.BookingsServices.updateBooking(id, req.body);
+    return (0, sendRespons_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: ' Booking updates successfully',
+        data: result
+    });
+}));
+const deleteBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield booking_service_1.BookingsServices.deleteBooking(id);
+    return (0, sendRespons_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: ' Booking deleted successfully',
+        data: result
+    });
+}));
 exports.BookingControllers = {
     createBooking,
     getBookings,
-    getUserBookings
+    getUserBookings,
+    updateBooking,
+    deleteBooking
 };

@@ -31,6 +31,23 @@ const carSchema = new mongoose_1.Schema({
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    images: {
+        type: [String],
+        default: []
+    },
+    featured: {
+        type: Boolean,
+        default: false
+    },
+    type: {
+        type: String,
+    },
+    model: {
+        type: String
+    },
+    year: {
+        type: String
     }
 }, { timestamps: true });
 exports.Car = (0, mongoose_1.model)('Car', carSchema);

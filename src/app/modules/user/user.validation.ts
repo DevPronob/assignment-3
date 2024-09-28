@@ -13,7 +13,7 @@ export const createUserValidationSchema = z.object({
         phone: z.string({
             required_error: "phone number is required"
         }),
-        address: z.string(),
+        address: z.string().optional(),
         status: z.enum(['active', 'blocked']).default('active')
     })
 });

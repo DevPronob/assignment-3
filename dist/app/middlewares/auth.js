@@ -21,14 +21,15 @@ const auth = (...userRoles) => {
     console.log(userRoles);
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const token = req.headers.authorization;
+        console.log(token, "toekn");
         if (!token) {
-            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "You have no access to this route");
+            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "You have no access to this route 1");
         }
-        const VerityToken = token.split(" ")[1];
+        const VerityToken = token;
         console.log("Token from headers:", token); // Log the token
         const decoded = jsonwebtoken_1.default.verify(VerityToken, process.env.JWT_SECRECT);
         if (!decoded) {
-            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "You have no access to this route");
+            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "You have no access to this route 2");
         }
         console.log(decoded);
         const user = yield user_model_1.User.findOne({ email: decoded.email });
@@ -36,7 +37,7 @@ const auth = (...userRoles) => {
             throw new AppError_1.default(http_status_1.default.NOT_FOUND, "You Are not loged in");
         }
         if (userRoles && !userRoles.includes(user.role)) {
-            throw new AppError_1.default(401, "You have no access to this route");
+            throw new AppError_1.default(401, "You have no access to this route 3");
         }
         req.user = decoded;
         next();

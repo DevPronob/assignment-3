@@ -37,11 +37,17 @@ const userSchema = new mongoose_1.Schema({
         select: 0
     },
     phone: {
-        type: String
+        type: String,
+        required: false
     },
     address: {
         type: String,
         required: false
+    },
+    status: {
+        type: String,
+        enum: ['active', 'blocked'],
+        default: 'active'
     },
 }, { timestamps: true });
 userSchema.pre('save', function (next) {

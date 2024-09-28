@@ -25,5 +25,57 @@ const bookingSchema = new mongoose_1.Schema({
         type: Number,
         default: 0
     },
+    costWithFeature: {
+        type: Number,
+        default: 0
+    },
+    pickUpLocation: {
+        type: String,
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'confirmed', 'cancelled'],
+        default: 'pending'
+    },
+    customerDetails: {
+        name: {
+            type: String,
+            required: true
+        },
+        email: {
+            type: String,
+            required: true
+        },
+        nid: {
+            type: String,
+            required: true
+        },
+        drivingLicense: {
+            type: String,
+            required: true
+        },
+    },
+    additationalFeatures: {
+        gps: {
+            type: Boolean,
+            default: false
+        },
+        childSeat: {
+            type: Boolean,
+            default: false
+        },
+        mobileWifi: {
+            type: Boolean,
+            default: false
+        },
+    },
+    returnCar: {
+        type: Boolean,
+        default: false
+    },
+    payment: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 exports.Booking = (0, mongoose_1.model)('Booking', bookingSchema);

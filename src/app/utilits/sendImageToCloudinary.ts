@@ -44,7 +44,8 @@ const storage = multer.diskStorage({
 });
 
 export const upload = multer({ storage: storage });
-const uploadMiddleware = (req: Req, res, next) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const uploadMiddleware = (req: any, res: any, next: any) => {
     // Use multer upload instance
     upload.array('files', 5)(req, res, (err) => {
         if (err) {
@@ -56,6 +57,7 @@ const uploadMiddleware = (req: Req, res, next) => {
         const errors: string[] = [];
 
         // Validate file types and sizes
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         files.forEach((file: any) => {
             const allowedTypes = ['image/jpeg', 'image/png'];
             const maxSize = 5 * 1024 * 1024; // 5MB

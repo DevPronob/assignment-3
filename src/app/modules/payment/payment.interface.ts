@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ObjectId } from "mongoose";
 
 export type TPayment = {
+    bookingId: any;
     car: ObjectId,
     customerName: string,
     key: string,

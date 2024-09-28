@@ -18,7 +18,8 @@ const sendRespons_1 = __importDefault(require("../../utilits/sendRespons"));
 const http_status_1 = __importDefault(require("http-status"));
 const car_service_1 = require("./car.service");
 const createCar = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield car_service_1.CarServices.createCarIntoDB(req.body);
+    console.log(req.files);
+    const result = yield car_service_1.CarServices.createCarIntoDB(req.body, req.files);
     return (0, sendRespons_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.CREATED,
@@ -28,7 +29,7 @@ const createCar = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
 }));
 const getCars = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.user, "bookings");
-    const result = yield car_service_1.CarServices.getCarsFromDB();
+    const result = yield car_service_1.CarServices.getCarsFromDB(req.query);
     return (0, sendRespons_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
@@ -48,7 +49,8 @@ const getSingleCar = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 }));
 const updateSingleCar = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const result = yield car_service_1.CarServices.upddateSingleCarIntoDB(id, req.body);
+    console.log(req.body, "ffff");
+    const result = yield car_service_1.CarServices.upddateSingleCarIntoDB(id, req.body, req.files);
     return (0, sendRespons_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,

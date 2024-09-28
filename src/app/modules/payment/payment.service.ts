@@ -6,10 +6,12 @@ import { Payment } from "./payment.model";
 import { v4 as uuid } from "uuid";
 import { Car } from "../car/car.model";
 import { SslCommerzPayment as SSLCommerzPayment } from 'sslcommerz';
+import { Booking } from "../booking/booking.model";
 
 
 // Function to create a payment
 const createPayment = async (payload: TPayment) => {
+    console.log(payload, "payload")
     const { car, customerName, customerEmail, phone, amount, address } = payload;
     console.log(payload, "item key")
     const carData = await Car.findOne({ _id: car });
@@ -75,6 +77,15 @@ const createPayment = async (payload: TPayment) => {
         const paymentInit = await sslcommer.init(productInfo);
         console.log(paymentInit)
         if (paymentInit.GatewayPageURL) {
+            const result = await Booking.findOneAndUpdate(
+                { _id: payload.bookingId, }, // Query
+                { payment: true }, // Update
+                {
+                    new: true,
+                    runValidators: true
+                }
+            );
+            console.log(result)
             return { payment_url: paymentInit.GatewayPageURL };
         } else {
             throw new AppError(httpStatus.CONFLICT, "Payment initiation not successful");
