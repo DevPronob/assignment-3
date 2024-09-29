@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable prefer-const */
 import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
@@ -8,33 +9,45 @@ import totalCost from "./car.utils";
 import { QueryBuilder } from "../../builder/QueryBuilder";
 import { v2 as cloudinary } from 'cloudinary';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, no-undef
 const createCarIntoDB = async (payload: any, file: any) => {
-    //creating car
-    const imageName = `${Math.floor(Math.random() * 1000)}${payload.name}`
-    let imageUrlList = [];
-    for (let i = 0; i < file.length; i++) {
-        let locaFilePath = file[i].path;
-        const result = await cloudinary.uploader.upload(locaFilePath, {
-            public_id: imageName
-        });
-        // Upload the local image to Cloudinary
-        // and get image url as response
-        // let result = await uploadToCloudinary(locaFilePath);
-        imageUrlList.push(result.url);
+    try {
+
+        const imageUrlList = await Promise.all(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            file.map((file: any, i: string) => {
+                return new Promise((resolve, reject) => {
+                    const uploadStream = cloudinary.uploader.upload_stream(
+                        {
+                            public_id: `${Math.floor(Math.random() * 1000)}_${payload.name}_${i}`,
+                        },
+                        (error, result) => {
+                            if (error) {
+                                return reject(error);
+                            }
+                            resolve(result?.secure_url);
+                        }
+                    );
+                    uploadStream.end(file.buffer);
+                });
+            })
+        );
+
+        console.log('Uploaded files:', imageUrlList); // Image URLs
+
+        // Create the car data with the uploaded image URLs
+        const carData = {
+            ...payload,
+            images: imageUrlList,
+        };
+
+        const result = await Car.create(carData);
+
+        return result;
+    } catch (error) {
+        console.error('Error uploading images:', error);
+        throw new Error('Failed to upload images');
     }
-    console.log(file)
-    console.log(imageUrlList)
-
-    const carData = {
-        ...payload,
-        images: imageUrlList
-    }
-
-
-
-    const result = await Car.create(carData)
-    return result
 };
 
 const getCarsFromDB = async (query: Record<string, unknown>) => {
@@ -51,39 +64,42 @@ const getSingleCarFromDB = async (id: string) => {
     return result
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const upddateSingleCarIntoDB = async (id: string, payload: Partial<TCar>, file: any) => {
-    console.log(payload, "payload")
-    //updating car
+    console.log(payload, file, "payload")
+
     const isCarExits = await Car.findById(id)
     if (!isCarExits) {
         throw new AppError(httpStatus.NOT_FOUND, "Car is not exits")
 
 
     }
-    let imageUrlList = [];
-
-    if (file.length > 0) {
-
-        const imageName = `${Math.floor(Math.random() * 1000)}${payload.name}`
-
-        for (let i = 0; i < file.length; i++) {
-            let locaFilePath = file[i].path;
-            console.log(locaFilePath, "locaFilePath")
-            const result = await cloudinary.uploader.upload(locaFilePath, {
-                public_id: imageName
+    const imageUrlList = await Promise.all(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        file.map((file: any, i: string) => {
+            return new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    {
+                        public_id: `${Math.floor(Math.random() * 1000)}_${payload.name}_${i}`,
+                    },
+                    (error, result) => {
+                        if (error) {
+                            return reject(error);
+                        }
+                        resolve(result?.secure_url);
+                    }
+                );
+                uploadStream.end(file.buffer);
             });
-            // Upload the local image to Cloudinary
-            // and get image url as response
-            // let result = await uploadToCloudinary(locaFilePath);
-            imageUrlList.push(result.url);
-        }
-    }
-    console.log(file, "file")
-    console.log(imageUrlList)
+        })
+    );
+
+    console.log('Uploaded files:', imageUrlList); // Image URLs
     const carData = {
         ...payload,
         images: imageUrlList
     }
+    console.log(carData, "updateCar Data")
 
     const result = await Car.findByIdAndUpdate(id, carData, {
         new: true,
@@ -134,3 +150,46 @@ export const CarServices = {
     deleteSingleCarIntoDB,
     returnCarIntoDB
 }
+
+
+// import multer from 'multer';
+// import cloudinary from 'cloudinary'; // Ensure you have Cloudinary SDK setup
+
+// // Set up multer for in-memory storage
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage });
+
+// app.post('/upload', upload.array('files'), async (req, res) => {
+//     const files = req.files as Express.Multer.File[];
+//     const payload = req.body;
+
+//     let imageUrlList = [];
+
+//     // Loop through files and upload each one to Cloudinary
+//     for (let i = 0; i < files.length; i++) {
+//         const file = files[i];
+
+//         // Upload file buffer to Cloudinary (in-memory)
+//         await new Promise((resolve, reject) => {
+//             const uploadStream = cloudinary.uploader.upload_stream(
+//                 {
+//                     public_id: `${Math.floor(Math.random() * 1000)}_${payload.name}_${i}`,
+//                 },
+//                 (error, result) => {
+//                     if (error) {
+//                         return reject(error);
+//                     }
+//                     imageUrlList.push(result?.secure_url);
+//                     resolve(result);
+//                 }
+//             );
+//             uploadStream.end(file.buffer); // Upload from memory buffer
+//         });
+//     }
+
+//     // Return uploaded image URLs to the client
+//     res.status(200).json({
+//         message: 'Upload successful',
+//         images: imageUrlList,
+//     });
+// });

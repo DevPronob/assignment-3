@@ -12,6 +12,7 @@ router.post('/failure', PayementControllers.failPayment)
 router.post('/cancel', PayementControllers.canclePayment)
 router.post('/ipn', PayementControllers.cpnPayment)
 router.get('/', PayementControllers.getPayments)
+router.get('/my-payment/:id', PayementControllers.getPayment)
 
 
 export const PaymentRoutes = router

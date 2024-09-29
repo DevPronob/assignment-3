@@ -53,7 +53,7 @@ const successPayment = catchAsync(
                 return res.status(404).send("Payment not found");
             }
 
-            res.status(302).redirect(`http://localhost:5173/success/${tran_id}`);
+            res.status(302).redirect(`https://car-rental-app-client-10.vercel.app/success/${tran_id}`);
         } catch (error) {
             console.error("Error updating order on success:", error);
             res.status(500).send("Internal Server Error");
@@ -67,7 +67,7 @@ const failPayment = catchAsync(
     async (req, res) => {
         const result = await Payment.findOneAndDelete({ tran_id: req.body.tran_id })
 
-        res.redirect(`http://localhost:5173`)
+        res.redirect(`https://car-rental-app-client-10.vercel.app`)
 
     }
 )
@@ -76,7 +76,7 @@ const canclePayment = catchAsync(
     async (req, res) => {
         const result = await Payment.findOneAndDelete({ tran_id: req.body.tran_id })
 
-        res.redirect(`http://localhost:5173`)
+        res.redirect(`https://car-rental-app-client-10.vercel.app`)
 
     }
 )
@@ -90,6 +90,23 @@ const cpnPayment = catchAsync(
 )
 
 
+const getPayment = catchAsync(
+    async (req, res) => {
+        const { id } = req.params
+        console.log(id)
+        const result = await PaymentServices.getPayment(id);
+        return sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.CREATED,
+            message: 'Payment rectrive successfully',
+            data: result
+        })
+
+
+    }
+)
+
+
 
 export const PayementControllers = {
     createPayment,
@@ -97,5 +114,6 @@ export const PayementControllers = {
     failPayment,
     getPayments,
     canclePayment,
-    cpnPayment
+    cpnPayment,
+    getPayment
 }

@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.upload = void 0;
 const cloudinary_1 = require("cloudinary");
 const multer_1 = __importDefault(require("multer"));
-const path_1 = __importDefault(require("path"));
 cloudinary_1.v2.config({
     cloud_name: 'djt6bowuz',
     api_key: '224485766351415',
@@ -31,16 +30,17 @@ cloudinary_1.v2.config({
 //         throw error;
 //     }
 // };
-const uploadsDirectory = path_1.default.join('C:', 'Users', 'user', 'Desktop', 'projects', 'car-rental-service-assignment', 'src', 'uploads');
-// Configure Multer storage
-const storage = multer_1.default.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadsDirectory);
-    },
-    filename: function (req, file, cb) {
-        cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
-    }
-});
+// const uploadsDirectory = path.join('C:', 'Users', 'user', 'Desktop', 'projects', 'car-rental-service-assignment', 'src', 'uploads');
+// // Configure Multer storage
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, uploadsDirectory);
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
+//     }
+// });
+const storage = multer_1.default.memoryStorage();
 exports.upload = (0, multer_1.default)({ storage: storage });
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const uploadMiddleware = (req, res, next) => {

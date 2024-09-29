@@ -15,4 +15,5 @@ router.post('/failure', payment_controller_1.PayementControllers.failPayment);
 router.post('/cancel', payment_controller_1.PayementControllers.canclePayment);
 router.post('/ipn', payment_controller_1.PayementControllers.cpnPayment);
 router.get('/', payment_controller_1.PayementControllers.getPayments);
+router.get('/my-payment/:id', payment_controller_1.PayementControllers.getPayment);
 exports.PaymentRoutes = router;

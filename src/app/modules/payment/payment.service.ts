@@ -26,10 +26,10 @@ const createPayment = async (payload: TPayment) => {
         total_amount: amount,
         currency: 'BDT',
         tran_id: uuid(),
-        success_url: `http://localhost:5000/api/payment/success`,
-        fail_url: `http://localhost:5000/api/payment/failure`,
-        cancel_url: `http://localhost:5000/api/payment/cancel`,
-        ipn_url: `http://localhost:5000/api/payment/ipn`,
+        success_url: `https://car-rental-app-ruby.vercel.app/api/payment/success`,
+        fail_url: `https://car-rental-app-ruby.vercel.app/api/payment/failure`,
+        cancel_url: `https://car-rental-app-ruby.vercel.app/api/payment/cancel`,
+        ipn_url: `https://car-rental-app-ruby.vercel.app/api/payment/ipn`,
         paymentStatus: 'pending',
         product_name: carData?.name,
         cus_name: customerName,
@@ -116,8 +116,16 @@ const getPayments = async () => {
     return totalRevenue[0]?.totalRevenue || 0;
 }
 
+const getPayment = async (payload: string) => {
+    const result = await Payment.find({ tran_id: payload }).populate('car')
+
+    return result
+}
+
+
 // Exported services
 export const PaymentServices = {
     createPayment,
-    getPayments
+    getPayments,
+    getPayment
 };

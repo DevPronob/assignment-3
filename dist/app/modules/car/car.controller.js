@@ -49,7 +49,13 @@ const getSingleCar = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 }));
 const updateSingleCar = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    console.log(req.body, "ffff");
+    console.log(req.body, req.files, "ffff");
+    if (req.files) {
+        console.log(req.files, "files");
+    }
+    if (req.body.data) {
+        req.body = JSON.parse(req.body.data);
+    }
     const result = yield car_service_1.CarServices.upddateSingleCarIntoDB(id, req.body, req.files);
     return (0, sendRespons_1.default)(res, {
         success: true,

@@ -19,9 +19,6 @@ router.post('/', sendImageToCloudinary_1.default, (req, res, next) => {
 router.get('/', car_controller_1.CarControllers.getCars);
 router.get('/:id', car_controller_1.CarControllers.getSingleCar);
 router.put('/return', car_controller_1.CarControllers.returnCar);
-router.put('/:id', sendImageToCloudinary_1.default, (req, res, next) => {
-    req.body = JSON.parse(req.body.data);
-    next();
-}, (0, validateRequest_1.default)(car_validation_1.CarValidation.updateCarValidationSchema), car_controller_1.CarControllers.updateSingleCar);
+router.put('/:id', sendImageToCloudinary_1.default, (0, validateRequest_1.default)(car_validation_1.CarValidation.updateCarValidationSchema), car_controller_1.CarControllers.updateSingleCar);
 router.delete('/:id', (0, auth_1.default)(user_Constant_1.USER_Role.ADMIN), car_controller_1.CarControllers.deleteSingleCar);
 exports.CarRoutes = router;

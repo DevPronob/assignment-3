@@ -50,7 +50,13 @@ const getSingleCar = catchAsync(
 const updateSingleCar = catchAsync(
     async (req, res) => {
         const { id } = req.params
-        console.log(req.body, "ffff")
+        console.log(req.body, req.files, "ffff")
+        if (req.files) {
+            console.log(req.files, "files")
+        }
+        if (req.body.data) {
+            req.body = JSON.parse(req.body.data)
+        }
         const result = await CarServices.upddateSingleCarIntoDB(id, req.body, req.files);
         return sendResponse(res, {
             success: true,

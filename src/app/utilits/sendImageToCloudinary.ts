@@ -1,6 +1,8 @@
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer'
-import path from 'path';
+
+
+
 cloudinary.config({
     cloud_name: 'djt6bowuz',
     api_key: '224485766351415',
@@ -31,21 +33,24 @@ cloudinary.config({
 
 // };
 
-const uploadsDirectory = path.join('C:', 'Users', 'user', 'Desktop', 'projects', 'car-rental-service-assignment', 'src', 'uploads');
+// const uploadsDirectory = path.join('C:', 'Users', 'user', 'Desktop', 'projects', 'car-rental-service-assignment', 'src', 'uploads');
 
-// Configure Multer storage
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadsDirectory);
-    },
-    filename: function (req, file, cb) {
-        cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
-    }
-});
+// // Configure Multer storage
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, uploadsDirectory);
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
+//     }
+// });
+
+const storage = multer.memoryStorage();
 
 export const upload = multer({ storage: storage });
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const uploadMiddleware = (req: any, res: any, next: any) => {
+
     // Use multer upload instance
     upload.array('files', 5)(req, res, (err) => {
         if (err) {

@@ -49,7 +49,7 @@ const successPayment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
         if (!result) {
             return res.status(404).send("Payment not found");
         }
-        res.status(302).redirect(`http://localhost:5173/success/${tran_id}`);
+        res.status(302).redirect(`https://car-rental-app-client-10.vercel.app/success/${tran_id}`);
     }
     catch (error) {
         console.error("Error updating order on success:", error);
@@ -58,15 +58,26 @@ const successPayment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
 }));
 const failPayment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_model_1.Payment.findOneAndDelete({ tran_id: req.body.tran_id });
-    res.redirect(`http://localhost:5173`);
+    res.redirect(`https://car-rental-app-client-10.vercel.app`);
 }));
 const canclePayment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_model_1.Payment.findOneAndDelete({ tran_id: req.body.tran_id });
-    res.redirect(`http://localhost:5173`);
+    res.redirect(`https://car-rental-app-client-10.vercel.app`);
 }));
 const cpnPayment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.body);
     res.send(req.body);
+}));
+const getPayment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    console.log(id);
+    const result = yield payment_service_1.PaymentServices.getPayment(id);
+    return (0, sendRespons_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.CREATED,
+        message: 'Payment rectrive successfully',
+        data: result
+    });
 }));
 exports.PayementControllers = {
     createPayment,
@@ -74,5 +85,6 @@ exports.PayementControllers = {
     failPayment,
     getPayments,
     canclePayment,
-    cpnPayment
+    cpnPayment,
+    getPayment
 };
