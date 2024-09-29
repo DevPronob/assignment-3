@@ -86,10 +86,10 @@ const uploadMiddleware = (req: any, res: any, next: any) => {
         //     return res.status(400).json({ errors });
         // }
 
-        // Attach files to the request object
+
         req.files = files;
 
-        // Proceed to the next middleware or route handler
+
         next();
     });
 };
